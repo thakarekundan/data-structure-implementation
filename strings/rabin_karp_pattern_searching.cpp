@@ -23,8 +23,8 @@ void search(char pat[], char txt[], int q)
     int h = 1;
 
     // The value of h would be "pow(d, M-1)%q"
-    for (i = 0; i < M-1; i++)
-        h = (h*d)%q;
+     h=pow(d,M-1);
+        h=h%q;
 
     // Calculate the hash value of pattern and first
     // window of text
