@@ -20,20 +20,22 @@ struct TrieNode *getNode(void)
 
     return pNode;
 }
-void printAllWords(TrieNode* root)
+void printAllWords(TrieNode* root,string &key)
 {
-	// if current node is leaf
-	if (root->isLeaf)
+	
+	if (root->isEndOfWord)
 	{
-			cout << str<<" ";
+			cout << key<<" ";
 	}
-
-	// recurse for all children of root node
-	for (int i = 0; i < ALPHABET_SIZE; i++)
+	
+    for (int i = 0; i < ALPHABET_SIZE; i++)
 	{
 		TrieNode* child = root->children[i];
-		if (child)
-			printAllWords(child);
+		if (child){
+		    key+=char(i+97);
+			printAllWords(child,key);
+			key.erase(key.begin() + key.length()-1);
+		}
 	}
 }
 void insert(struct TrieNode *root, string key)
