@@ -1,8 +1,4 @@
-#include <iostream> 
-#include <cctype> 
-#include<string>
 #include<bits/stdc++.h>
- 
 using namespace std;
 
 const int ALPHABET_SIZE = 26;
@@ -12,7 +8,6 @@ struct TrieNode
 {
     struct TrieNode *children[ALPHABET_SIZE];
     bool isEndOfWord;
-    vector<string>input;
 };
 struct TrieNode *getNode(void)
 {
