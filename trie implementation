@@ -1,0 +1,152 @@
+#include <iostream> 
+#include <cctype> 
+#include<string>
+#include<bits/stdc++.h>
+ 
+using namespace std;
+
+const int ALPHABET_SIZE = 26;
+
+
+struct TrieNode
+{
+    struct TrieNode *children[ALPHABET_SIZE];
+    bool isEndOfWord;
+    vector<string>input;
+};
+struct TrieNode *getNode(void)
+{
+    struct TrieNode *pNode =  new TrieNode;
+
+  pNode->isEndOfWord = false;
+
+    for (int i = 0; i < ALPHABET_SIZE; i++)
+        pNode->children[i] = NULL;
+
+    return pNode;
+}
+void printAllWords(TrieNode* root)
+{
+	// if current node is leaf
+	if (root->isLeaf)
+	{
+			cout << str<<" ";
+	}
+
+	// recurse for all children of root node
+	for (int i = 0; i < ALPHABET_SIZE; i++)
+	{
+		TrieNode* child = root->children[i];
+		if (child)
+			printAllWords(child);
+	}
+}
+void insert(struct TrieNode *root, string key)
+{
+    struct TrieNode *pCrawl = root;
+
+    for (int i = 0; i < key.length(); i++)
+    {
+        int index = key[i] - 'a';
+        if (!pCrawl->children[index])
+            pCrawl->children[index] = getNode();
+
+        pCrawl = pCrawl->children[index];
+    }
+
+    pCrawl->isEndOfWord=true;
+}
+
+bool search(struct TrieNode *root, string key)
+{
+    struct TrieNode *pCrawl = root;
+
+    for (int i = 0; i < key.length(); i++)
+    {
+        int index = key[i] - 'a';
+        if (!pCrawl->children[index])
+            return false;
+
+        pCrawl = pCrawl->children[index];
+    }
+
+    return pCrawl->isEndOfWord&&pCrawl!=NULL;
+}
+
+// Returns true if root has no children, else false
+bool isEmpty(TrieNode* root)
+{
+    for (int i = 0; i < ALPHABET_SIZE; i++)
+        if (root->children[i])
+            return false;
+    return true;
+}
+
+// Recursive function to delete a key from given Trie
+TrieNode* remove(TrieNode* root, string key, int depth = 0)
+{
+    // If tree is empty
+    if (!root)
+        return NULL;
+
+    // If last character of key is being processed
+    if (depth == key.size()) {
+
+        // This node is no more end of word after
+        // removal of given key
+        if (root->isEndOfWord)
+            root->isEndOfWord = false;
+
+        // If given is not prefix of any other word
+        if (isEmpty(root)) {
+            delete (root);
+            root = NULL;
+        }
+
+        return root;
+    }
+
+    // If not last character, recur for the child
+    // obtained using ASCII value
+    int index = key[depth] - 'a';
+    root->children[index] = 
+          remove(root->children[index], key, depth + 1);
+
+    // If root does not have any child (its only child got 
+    // deleted), and it is not end of another word.
+    if (isEmpty(root) && root->isEndOfWord == false) {
+        delete (root);
+        root = NULL;
+    }
+
+    return root;
+}
+
+int main()
+ {
+	//code
+	int test;
+	cin>>test;
+	while(test--)
+	{
+	    int n;
+	    cin>>n;
+	    vector<string>s;
+	    for(int i=0;i<n;i++)
+	    {
+	        string a;
+	        cin>>a;
+	        s.push_back(a);
+	    }
+	struct TrieNode *root = getNode();
+   
+    for (int i = 0; i < n; i++)
+       { 
+           insert(root, s[i]);
+       }
+       printAllWords(root);
+       cout<<search(root,check);
+       //remove(root,"");
+	}
+	return 0;
+}
